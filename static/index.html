@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Image Blur Tool</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <header class="header">
+
+        <div class="logo">
+            Blur<span>Tool</span>
+        </div>
+
+        <p>
+            Blur faces, number plates, backgrounds or
+            your entire image.
+        </p>
+
+    </header>
+
+
+    <!-- =================================================
+         UPLOAD
+    ================================================== -->
+
+    <section class="upload-card">
+
+        <div class="upload-left">
+
+            <h2>
+                Upload Image
+            </h2>
+
+            <p>
+                Select a JPG, PNG or WEBP image.
+            </p>
+
+        </div>
+
+
+        <div class="upload-right">
+
+            <label
+                for="imageInput"
+                class="file-label"
+            >
+                Choose Image
+            </label>
+
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+
+            <button
+                id="uploadBtn"
+                class="primary-btn"
+            >
+                Upload Image
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         EDITOR
+    ================================================== -->
+
+    <section
+        id="editorSection"
+        class="editor-section hidden"
+    >
+
+
+        <!-- =================================================
+             BLUR CONTROLS
+        ================================================== -->
+
+        <div class="command-card">
+
+            <h2>
+                Blur Settings
+            </h2>
+
+            <p>
+                Choose what part of the image you want
+                to blur.
+            </p>
+
+
+            <!-- BLUR TYPE -->
+
+            <div class="blur-type-section">
+
+                <div class="control-title">
+                    Blur Type
+                </div>
+
+
+                <div class="blur-type-options">
+
+
+                    <label class="blur-option">
+
+                        <input
+                            type="radio"
+                            name="blurType"
+                            value="selected"
+                            checked
+                        >
+
+                        <span class="radio-circle"></span>
+
+                        <span>
+                            Selected Area
+                        </span>
+
+                    </label>
+
+
+                    <label class="blur-option">
+
+                        <input
+                            type="radio"
+                            name="blurType"
+                            value="background"
+                        >
+
+                        <span class="radio-circle"></span>
+
+                        <span>
+                            Background
+                        </span>
+
+                    </label>
+
+
+                    <label class="blur-option">
+
+                        <input
+                            type="radio"
+                            name="blurType"
+                            value="entire"
+                        >
+
+                        <span class="radio-circle"></span>
+
+                        <span>
+                            Entire Image
+                        </span>
+
+                    </label>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- SELECTED AREA COMMAND -->
+
+            <div
+                id="selectedAreaControls"
+                class="selected-area-controls"
+            >
+
+                <div class="command-row">
+
+                    <input
+                        type="text"
+                        id="commandInput"
+                        placeholder="e.g. face, number plate, text"
+                    >
+
+
+                    <button
+                        id="selectModeBtn"
+                        class="secondary-btn"
+                    >
+                        Select Area
+                    </button>
+
+                </div>
+
+
+                <p class="helper-text">
+                    Drag on the image to select an area.
+                    Drag again to select another area.
+                </p>
+
+            </div>
+
+
+            <!-- BLUR INTENSITY -->
+
+            <div class="intensity-control">
+
+                <div class="intensity-header">
+
+                    <label
+                        for="blurIntensity"
+                    >
+                        Blur Intensity
+                    </label>
+
+
+                    <span>
+
+                        <strong
+                            id="intensityValue"
+                        >
+                            5
+                        </strong>
+
+                        /10
+
+                    </span>
+
+                </div>
+
+
+                <div class="intensity-slider-row">
+
+                    <span class="intensity-label">
+                        Less
+                    </span>
+
+
+                    <input
+                        type="range"
+                        id="blurIntensity"
+                        min="1"
+                        max="10"
+                        value="5"
+                        step="1"
+                    >
+
+
+                    <span class="intensity-label">
+                        More
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             WORKSPACE
+        ================================================== -->
+
+        <div class="workspace">
+
+
+            <!-- ORIGINAL -->
+
+            <div class="image-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Original Image
+                        </h3>
+
+
+                        <span id="selectionHint">
+                            Drag to select an area.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="imageContainer"
+                    class="image-container"
+                >
+
+                    <img
+                        id="originalImage"
+                        alt="Original Image"
+                    >
+
+
+                    <div
+                        id="selectionLayer"
+                        class="selection-layer"
+                    ></div>
+
+                </div>
+
+
+                <div class="action-area">
+
+
+                    <button
+                        id="blurBtn"
+                        class="blur-btn"
+                        disabled
+                    >
+                        Blur Selected Areas
+                    </button>
+
+
+                    <button
+                        id="clearSelectionBtn"
+                        class="clear-btn"
+                        disabled
+                    >
+                        Clear Selections
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROCESSED -->
+
+            <div class="image-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Processed Image
+                        </h3>
+
+
+                        <span>
+                            Preview before downloading
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="processedContainer"
+                    class="processed-container"
+                >
+
+
+                    <div
+                        id="processedPlaceholder"
+                        class="placeholder"
+                    >
+
+                        <div class="placeholder-icon">
+                            ✨
+                        </div>
+
+
+                        <p>
+                            Your blurred image will appear here.
+                        </p>
+
+                    </div>
+
+
+                    <img
+                        id="processedImage"
+                        alt="Processed Image"
+                    >
+
+                </div>
+
+
+                <div class="action-area">
+
+                    <a
+                        id="downloadBtn"
+                        class="download-btn hidden"
+                        download="blurred-image.jpg"
+                    >
+                        Download Image
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =================================================
+         MESSAGE
+    ================================================== -->
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+</div>
+
+
+<script
+    src="/static/script.js"
+></script>
+
+
+</body>
+
+</html>

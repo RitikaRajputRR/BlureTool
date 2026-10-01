@@ -1,0 +1,1068 @@
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body {
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f5f7fb;
+
+    color: #172033;
+}
+
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.page {
+    width: 94%;
+
+    max-width: 1350px;
+
+    margin: 0 auto;
+
+    padding: 45px 0 70px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+
+.logo {
+    font-size: 42px;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+.logo span {
+    color: #2563eb;
+}
+
+
+.header p {
+    margin-top: 10px;
+
+    color: #697386;
+
+    font-size: 16px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   UPLOAD
+===================================================== */
+
+.upload-card {
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 25px 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    box-shadow:
+        0 8px 30px rgba(
+            15,
+            23,
+            42,
+            0.07
+        );
+
+    border: 1px solid #e8ecf3;
+}
+
+
+.upload-left h2 {
+    font-size: 22px;
+}
+
+
+.upload-left p {
+    color: #7b8494;
+
+    margin-top: 6px;
+
+    line-height: 1.5;
+}
+
+
+.upload-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+#imageInput {
+    display: none;
+}
+
+
+.file-label {
+    padding: 12px 18px;
+
+    border: 1px solid #d8dee9;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    background: white;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+
+.file-label:hover {
+    background: #f8fafc;
+
+    border-color: #2563eb;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.primary-btn,
+.secondary-btn,
+.blur-btn {
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s,
+        transform 0.1s,
+        opacity 0.2s;
+}
+
+
+.primary-btn:active,
+.secondary-btn:active,
+.blur-btn:active,
+.clear-btn:active {
+    transform: scale(0.98);
+}
+
+
+.primary-btn {
+    background: #2563eb;
+
+    color: white;
+}
+
+
+.primary-btn:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+
+.primary-btn:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+.secondary-btn {
+    background: #eef3ff;
+
+    color: #2458c5;
+}
+
+
+.secondary-btn:hover:not(:disabled) {
+    background: #dfe9ff;
+}
+
+
+/* =====================================================
+   EDITOR
+===================================================== */
+
+.editor-section {
+    margin-top: 30px;
+}
+
+
+/* =====================================================
+   COMMAND CARD
+===================================================== */
+
+.command-card {
+    background: white;
+
+    border: 1px solid #e8ecf3;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 8px 30px rgba(
+            15,
+            23,
+            42,
+            0.05
+        );
+}
+
+
+.command-card h2 {
+    font-size: 21px;
+}
+
+
+.command-card > p {
+    color: #778195;
+
+    margin-top: 6px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   BLUR TYPE
+===================================================== */
+
+.blur-type-section {
+    margin-top: 22px;
+
+    padding-bottom: 20px;
+
+    border-bottom:
+        1px solid #edf0f5;
+}
+
+
+.control-title {
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #374151;
+
+    margin-bottom: 14px;
+}
+
+
+.blur-type-options {
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+}
+
+
+.blur-option {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #374151;
+
+    user-select: none;
+}
+
+
+.blur-option input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.radio-circle {
+    width: 18px;
+
+    height: 18px;
+
+    border: 2px solid #cbd5e1;
+
+    border-radius: 50%;
+
+    position: relative;
+
+    transition:
+        border-color 0.2s,
+        background 0.2s;
+}
+
+
+.blur-option input:checked
++
+.radio-circle {
+    border-color: #2563eb;
+}
+
+
+.blur-option input:checked
++
+.radio-circle::after {
+    content: "";
+
+    position: absolute;
+
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    top: 3px;
+
+    left: 3px;
+}
+
+
+.blur-option:hover
+.radio-circle {
+    border-color: #2563eb;
+}
+
+
+/* =====================================================
+   SELECTED AREA CONTROLS
+===================================================== */
+
+.selected-area-controls {
+    margin-top: 20px;
+}
+
+
+.command-row {
+    display: flex;
+
+    gap: 12px;
+}
+
+
+.command-row input {
+    flex: 1;
+
+    padding: 13px 15px;
+
+    border: 1px solid #dce2eb;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 15px;
+
+    color: #172033;
+
+    background: white;
+
+    transition:
+        border 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.command-row input::placeholder {
+    color: #9aa3b2;
+}
+
+
+.command-row input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(
+            37,
+            99,
+            235,
+            0.08
+        );
+}
+
+
+.helper-text {
+    color: #8992a2;
+
+    font-size: 13px;
+
+    margin-top: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   INTENSITY
+===================================================== */
+
+.intensity-control {
+    margin-top: 22px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid #edf0f5;
+}
+
+
+.intensity-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+
+.intensity-header label {
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #374151;
+}
+
+
+.intensity-header span {
+    font-size: 14px;
+
+    color: #2563eb;
+}
+
+
+.intensity-slider-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.intensity-label {
+    font-size: 12px;
+
+    color: #8992a2;
+
+    white-space: nowrap;
+}
+
+
+#blurIntensity {
+    flex: 1;
+
+    width: 100%;
+
+    height: 6px;
+
+    cursor: pointer;
+
+    accent-color: #2563eb;
+}
+
+
+/* =====================================================
+   WORKSPACE
+===================================================== */
+
+.workspace {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 25px;
+
+    margin-top: 25px;
+}
+
+
+/* =====================================================
+   IMAGE CARD
+===================================================== */
+
+.image-card {
+    background: white;
+
+    border: 1px solid #e8ecf3;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 30px rgba(
+            15,
+            23,
+            42,
+            0.05
+        );
+}
+
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.card-header {
+    padding: 20px 22px;
+
+    border-bottom:
+        1px solid #edf0f5;
+}
+
+
+.card-header h3 {
+    font-size: 18px;
+}
+
+
+.card-header span {
+    display: block;
+
+    color: #8992a2;
+
+    font-size: 13px;
+
+    margin-top: 5px;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   IMAGE CONTAINER
+===================================================== */
+
+.image-container {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 420px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #f7f8fa;
+
+    overflow: hidden;
+
+    cursor: crosshair;
+
+    user-select: none;
+
+    touch-action: none;
+}
+
+
+#originalImage {
+    display: block;
+
+    max-width: 100%;
+
+    max-height: 560px;
+
+    width: auto;
+
+    height: auto;
+
+    user-select: none;
+
+    pointer-events: none;
+
+    -webkit-user-drag: none;
+}
+
+
+/* =====================================================
+   SELECTION LAYER
+===================================================== */
+
+.selection-layer {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   SELECTION BOX
+===================================================== */
+
+.selection-box {
+    position: absolute;
+
+    border: 3px solid #2563eb;
+
+    background: rgba(
+        37,
+        99,
+        235,
+        0.20
+    );
+
+    pointer-events: none;
+
+    min-width: 2px;
+
+    min-height: 2px;
+
+    z-index: 10;
+}
+
+
+/* =====================================================
+   SELECTION NUMBER
+===================================================== */
+
+.selection-number {
+    position: absolute;
+
+    top: -25px;
+
+    left: -3px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    padding: 4px 8px;
+
+    border-radius:
+        5px 5px 0 0;
+
+    line-height: 1;
+}
+
+
+/* =====================================================
+   ACTION AREA
+===================================================== */
+
+.action-area {
+    padding: 18px 22px;
+
+    border-top:
+        1px solid #edf0f5;
+
+    text-align: right;
+
+    min-height: 70px;
+}
+
+
+/* =====================================================
+   BLUR BUTTON
+===================================================== */
+
+.blur-btn {
+    background: #111827;
+
+    color: white;
+}
+
+
+.blur-btn:hover:not(:disabled) {
+    background: #000000;
+}
+
+
+.blur-btn:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   CLEAR BUTTON
+===================================================== */
+
+.clear-btn {
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    margin-left: 8px;
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+    transition:
+        background 0.2s,
+        transform 0.1s,
+        opacity 0.2s;
+}
+
+
+.clear-btn:hover:not(:disabled) {
+    background: #fecaca;
+}
+
+
+.clear-btn:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   PROCESSED
+===================================================== */
+
+.processed-container {
+    min-height: 420px;
+
+    background: #f7f8fa;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+#processedImage {
+    display: none;
+
+    max-width: 100%;
+
+    max-height: 560px;
+
+    width: auto;
+
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+/* =====================================================
+   PLACEHOLDER
+===================================================== */
+
+.placeholder {
+    text-align: center;
+
+    color: #9aa3b2;
+
+    padding: 40px;
+}
+
+
+.placeholder-icon {
+    font-size: 45px;
+
+    margin-bottom: 12px;
+}
+
+
+.placeholder p {
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   DOWNLOAD
+===================================================== */
+
+.download-btn {
+    display: inline-block;
+
+    text-decoration: none;
+
+    padding: 12px 22px;
+
+    border-radius: 9px;
+
+    background: #16a34a;
+
+    color: white;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s,
+        transform 0.1s;
+}
+
+
+.download-btn:hover {
+    background: #15803d;
+}
+
+
+.download-btn:active {
+    transform: scale(0.98);
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message {
+    text-align: center;
+
+    margin-top: 20px;
+
+    min-height: 24px;
+
+    font-weight: 600;
+
+    color: #374151;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   HIDDEN
+===================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .upload-card {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .upload-right {
+        flex-wrap: wrap;
+    }
+
+
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+
+
+    .image-container,
+    .processed-container {
+        min-height: 380px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .page {
+        width: 94%;
+
+        padding-top: 25px;
+    }
+
+
+    .logo {
+        font-size: 32px;
+    }
+
+
+    .header p {
+        font-size: 14px;
+
+        line-height: 1.5;
+    }
+
+
+    .upload-card {
+        padding: 20px;
+    }
+
+
+    .upload-right {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        width: 100%;
+    }
+
+
+    .file-label,
+    .primary-btn {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    .command-card {
+        padding: 20px;
+    }
+
+
+    .blur-type-options {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 14px;
+    }
+
+
+    .command-row {
+        flex-direction: column;
+    }
+
+
+    .secondary-btn {
+        width: 100%;
+    }
+
+
+    .intensity-slider-row {
+        gap: 8px;
+    }
+
+
+    .intensity-label {
+        font-size: 11px;
+    }
+
+
+    .image-container,
+    .processed-container {
+        min-height: 300px;
+    }
+
+
+    .action-area {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        align-items: stretch;
+
+        text-align: center;
+    }
+
+
+    .blur-btn,
+    .clear-btn,
+    .download-btn {
+        width: 100%;
+
+        margin-left: 0;
+    }
+
+
+    .selection-number {
+        font-size: 11px;
+
+        padding: 3px 6px;
+    }
+
+}

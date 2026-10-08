@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 import os
 import shutil
@@ -20,6 +21,19 @@ app = FastAPI(
 
 
 # =========================================================
+# CORS
+# =========================================================
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# =========================================================
 # FOLDERS
 # =========================================================
 
@@ -29,6 +43,10 @@ PROCESSED_DIR = "processed"
 
 STATIC_DIR = "static"
 
+
+# =========================================================
+# CREATE FOLDERS
+# =========================================================
 
 os.makedirs(
     UPLOAD_DIR,
@@ -107,12 +125,9 @@ async def upload_image(
     if file.content_type not in allowed_types:
 
         return {
-
             "success": False,
-
             "message":
                 "Only JPG, PNG and WEBP images are allowed."
-
         }
 
 
@@ -167,12 +182,9 @@ async def upload_image(
 
 
         return {
-
             "success": False,
-
             "message":
                 "Unable to save uploaded image."
-
         }
 
 
@@ -181,7 +193,6 @@ async def upload_image(
     # -----------------------------------------------------
 
     return {
-
         "success": True,
 
         "message":
@@ -192,7 +203,6 @@ async def upload_image(
 
         "image_url":
             f"/uploads/{filename}"
-
     }
 
 
@@ -204,6 +214,7 @@ def get_safe_kernel_size(
     size: int,
     intensity: int
 ):
+
     """
     Creates a valid odd Gaussian blur kernel.
 
@@ -252,11 +263,9 @@ def get_safe_kernel_size(
 
 
     max_kernel = (
-
         size
         if size % 2 == 1
         else size - 1
-
     )
 
 
@@ -323,6 +332,7 @@ def blur_entire_image(
                 )
             )
 
+
         return image.copy()
 
 
@@ -331,16 +341,12 @@ def blur_entire_image(
     # -----------------------------------------------------
 
     return cv2.GaussianBlur(
-
         image,
-
         (
             kernel,
             kernel
         ),
-
         0
-
     )
 
 
@@ -388,6 +394,7 @@ def blur_selected_areas(
             height = int(
                 area["height"]
             )
+
 
         except (
             KeyError,
@@ -522,22 +529,19 @@ def blur_selected_areas(
             ):
 
                 blurred_roi = cv2.blur(
-
                     roi,
-
                     (
                         min(
                             3,
                             width
                         ),
-
                         min(
                             3,
                             height
                         )
                     )
-
                 )
+
 
             else:
 
@@ -551,16 +555,12 @@ def blur_selected_areas(
             # ------------------------------------------------
 
             blurred_roi = cv2.GaussianBlur(
-
                 roi,
-
                 (
                     kernel_width,
                     kernel_height
                 ),
-
                 0
-
             )
 
 
@@ -681,15 +681,10 @@ def blur_background(
 
 
     rect = (
-
         margin_x,
-
         margin_y,
-
         rect_width,
-
         rect_height
-
     )
 
 
@@ -722,21 +717,13 @@ def blur_background(
     try:
 
         cv2.grabCut(
-
             image,
-
             mask,
-
             rect,
-
             background_model,
-
             foreground_model,
-
             5,
-
             cv2.GC_INIT_WITH_RECT
-
         )
 
 
@@ -759,7 +746,6 @@ def blur_background(
     # =====================================================
 
     foreground_mask = np.where(
-
         (
             mask ==
             cv2.GC_FGD
@@ -769,11 +755,8 @@ def blur_background(
             mask ==
             cv2.GC_PR_FGD
         ),
-
         255,
-
         0
-
     ).astype(
         np.uint8
     )
@@ -784,16 +767,12 @@ def blur_background(
     # =====================================================
 
     foreground_mask = cv2.GaussianBlur(
-
         foreground_mask,
-
         (
             9,
             9
         ),
-
         0
-
     )
 
 
@@ -802,11 +781,8 @@ def blur_background(
     # =====================================================
 
     blurred_image = blur_entire_image(
-
         image,
-
         intensity
-
     )
 
 
@@ -815,13 +791,11 @@ def blur_background(
     # =====================================================
 
     foreground_alpha = (
-
         foreground_mask.astype(
             np.float32
         )
         /
         255.0
-
     )
 
 
@@ -830,13 +804,11 @@ def blur_background(
     # =====================================================
 
     foreground_alpha = cv2.merge(
-
         [
             foreground_alpha,
             foreground_alpha,
             foreground_alpha
         ]
-
     )
 
 
@@ -845,7 +817,6 @@ def blur_background(
     # =====================================================
 
     result = (
-
         image.astype(
             np.float32
         )
@@ -862,7 +833,6 @@ def blur_background(
             1.0 -
             foreground_alpha
         )
-
     )
 
 
@@ -932,12 +902,9 @@ async def blur_image_api(
     ):
 
         return {
-
             "success": False,
-
             "message":
                 "Original image not found."
-
         }
 
 
@@ -950,6 +917,7 @@ async def blur_image_api(
         intensity = int(
             intensity
         )
+
 
     except (
         TypeError,
@@ -980,12 +948,9 @@ async def blur_image_api(
     if image is None:
 
         return {
-
             "success": False,
-
             "message":
                 "Unable to read image."
-
         }
 
 
@@ -1005,18 +970,16 @@ async def blur_image_api(
                 areas
             )
 
+
         except (
             json.JSONDecodeError,
             TypeError
         ):
 
             return {
-
                 "success": False,
-
                 "message":
                     "Invalid selected areas."
-
             }
 
 
@@ -1030,12 +993,9 @@ async def blur_image_api(
         ):
 
             return {
-
                 "success": False,
-
                 "message":
                     "Selected areas must be a list."
-
             }
 
 
@@ -1048,12 +1008,9 @@ async def blur_image_api(
         ) == 0:
 
             return {
-
                 "success": False,
-
                 "message":
                     "Please select at least one area."
-
             }
 
 
@@ -1063,13 +1020,9 @@ async def blur_image_api(
 
         image, processed_count = \
             blur_selected_areas(
-
                 image,
-
                 selected_areas,
-
                 intensity
-
             )
 
 
@@ -1080,22 +1033,17 @@ async def blur_image_api(
         if processed_count == 0:
 
             return {
-
                 "success": False,
-
                 "message":
                     "No valid areas were selected."
-
             }
 
 
         message = (
-
             f"{processed_count} "
             f"area(s) blurred successfully "
             f"with intensity "
             f"{intensity}/10."
-
         )
 
 
@@ -1107,26 +1055,20 @@ async def blur_image_api(
 
         image, success = \
             blur_background(
-
                 image,
-
                 intensity
-
             )
 
 
         if not success:
 
             return {
-
                 "success": False,
-
                 "message":
                     (
                         "Unable to detect the "
                         "background automatically."
                     )
-
             }
 
 
@@ -1134,10 +1076,8 @@ async def blur_image_api(
 
 
         message = (
-
             "Background blurred successfully "
             f"with intensity {intensity}/10."
-
         )
 
 
@@ -1148,11 +1088,8 @@ async def blur_image_api(
     elif blur_type == "entire":
 
         image = blur_entire_image(
-
             image,
-
             intensity
-
         )
 
 
@@ -1160,10 +1097,8 @@ async def blur_image_api(
 
 
         message = (
-
             "Entire image blurred successfully "
             f"with intensity {intensity}/10."
-
         )
 
 
@@ -1174,15 +1109,12 @@ async def blur_image_api(
     else:
 
         return {
-
             "success": False,
-
             "message":
                 (
                     "Invalid blur type. "
                     "Use selected, background or entire."
                 )
-
         }
 
 
@@ -1191,20 +1123,15 @@ async def blur_image_api(
     # =====================================================
 
     output_filename = (
-
         f"blurred_"
         f"{uuid.uuid4().hex}"
         f".jpg"
-
     )
 
 
     output_path = os.path.join(
-
         PROCESSED_DIR,
-
         output_filename
-
     )
 
 
@@ -1213,23 +1140,17 @@ async def blur_image_api(
     # =====================================================
 
     success = cv2.imwrite(
-
         output_path,
-
         image
-
     )
 
 
     if not success:
 
         return {
-
             "success": False,
-
             "message":
                 "Unable to save processed image."
-
         }
 
 
@@ -1238,7 +1159,6 @@ async def blur_image_api(
     # =====================================================
 
     return {
-
         "success": True,
 
         "message":
@@ -1258,5 +1178,4 @@ async def blur_image_api(
 
         "intensity":
             intensity
-
     }

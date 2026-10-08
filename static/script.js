@@ -5,6 +5,13 @@
 
 
 // =====================================================
+// RENDER BACKEND URL
+// =====================================================
+
+const API_URL = "https://bluretool.onrender.com";
+
+
+// =====================================================
 // DOM ELEMENTS
 // =====================================================
 
@@ -51,14 +58,10 @@ const selectModeBtn =
     document.getElementById("selectModeBtn");
 
 const selectedAreaControls =
-    document.getElementById(
-        "selectedAreaControls"
-    );
+    document.getElementById("selectedAreaControls");
 
 const selectionHint =
-    document.getElementById(
-        "selectionHint"
-    );
+    document.getElementById("selectionHint");
 
 
 // =====================================================
@@ -66,14 +69,10 @@ const selectionHint =
 // =====================================================
 
 const blurIntensity =
-    document.getElementById(
-        "blurIntensity"
-    );
+    document.getElementById("blurIntensity");
 
 const intensityValue =
-    document.getElementById(
-        "intensityValue"
-    );
+    document.getElementById("intensityValue");
 
 
 // =====================================================
@@ -130,11 +129,13 @@ function getBlurType() {
             'input[name="blurType"]:checked'
         );
 
+
     if (!selected) {
 
         return "selected";
 
     }
+
 
     return selected.value;
 
@@ -171,72 +172,109 @@ function handleBlurTypeChange() {
 
     if (blurType === "selected") {
 
-        selectedAreaControls.classList.remove(
-            "hidden"
-        );
+        if (selectedAreaControls) {
 
-        selectionHint.textContent =
-            "Drag to select an area. Drag again for another area.";
+            selectedAreaControls.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        if (selectionHint) {
+
+            selectionHint.textContent =
+                "Drag to select an area. Drag again for another area.";
+
+        }
+
 
         blurBtn.textContent =
             "Blur Selected Areas";
 
+
         imageContainer.style.cursor =
             "crosshair";
 
+
         updateButtons();
+
 
         showMessage(
             "Selected Area mode: drag over one or more areas."
         );
 
+
         return;
+
     }
 
 
     clearAllSelections();
 
 
-    selectedAreaControls.classList.add(
-        "hidden"
-    );
+    if (selectedAreaControls) {
+
+        selectedAreaControls.classList.add(
+            "hidden"
+        );
+
+    }
 
 
     if (blurType === "background") {
 
-        selectionHint.textContent =
-            "Background will be detected automatically.";
+        if (selectionHint) {
+
+            selectionHint.textContent =
+                "Background will be detected automatically.";
+
+        }
+
 
         blurBtn.textContent =
             "Blur Background";
 
+
         imageContainer.style.cursor =
             "default";
 
+
         blurBtn.disabled =
             !uploadedFilename;
+
 
         showMessage(
             "Background mode selected. The app will detect the foreground and blur the background."
         );
 
+
         return;
+
     }
 
 
     if (blurType === "entire") {
 
-        selectionHint.textContent =
-            "The complete image will be blurred.";
+        if (selectionHint) {
+
+            selectionHint.textContent =
+                "The complete image will be blurred.";
+
+        }
+
 
         blurBtn.textContent =
             "Blur Entire Image";
 
+
         imageContainer.style.cursor =
             "default";
 
+
         blurBtn.disabled =
             !uploadedFilename;
+
 
         showMessage(
             "Entire Image mode selected."
@@ -266,6 +304,7 @@ uploadBtn.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -287,6 +326,7 @@ uploadBtn.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -316,7 +356,7 @@ uploadBtn.addEventListener(
 
             const response =
                 await fetch(
-                    "/api/upload",
+                    `${API_URL}/api/upload`,
                     {
                         method: "POST",
                         body: formData
@@ -347,6 +387,7 @@ uploadBtn.addEventListener(
                 resetUploadButton();
 
                 return;
+
             }
 
 
@@ -355,7 +396,7 @@ uploadBtn.addEventListener(
 
 
             originalImage.src =
-                `${data.image_url}?t=${Date.now()}`;
+                `${API_URL}${data.image_url}?t=${Date.now()}`;
 
 
             originalImage.onload =
@@ -371,6 +412,7 @@ uploadBtn.addEventListener(
 
                     processedImage.src =
                         "";
+
 
                     processedImage.style.display =
                         "none";
@@ -450,14 +492,18 @@ imageContainer.addEventListener(
         if (
             !uploadedFilename
         ) {
+
             return;
+
         }
 
 
         if (
             getBlurType() !== "selected"
         ) {
+
             return;
+
         }
 
 
@@ -570,7 +616,9 @@ imageContainer.addEventListener(
             !isSelecting ||
             !temporaryBox
         ) {
+
             return;
+
         }
 
 
@@ -812,6 +860,7 @@ imageContainer.addEventListener(
         } catch (error) {
 
             // Ignore
+
         }
 
     }
@@ -862,6 +911,7 @@ function clearAllSelections() {
 
     selectedAreas =
         [];
+
 
     isSelecting =
         false;
@@ -1154,7 +1204,7 @@ blurBtn.addEventListener(
 
             const response =
                 await fetch(
-                    "/api/blur",
+                    `${API_URL}/api/blur`,
                     {
                         method: "POST",
                         body: formData
@@ -1199,8 +1249,12 @@ blurBtn.addEventListener(
             }
 
 
+            const processedUrl =
+                `${API_URL}${data.processed_url}`;
+
+
             processedImage.src =
-                `${data.processed_url}?t=${Date.now()}`;
+                `${processedUrl}?t=${Date.now()}`;
 
 
             processedImage.onload =
@@ -1215,7 +1269,7 @@ blurBtn.addEventListener(
 
 
                     downloadBtn.href =
-                        data.processed_url;
+                        processedUrl;
 
 
                     downloadBtn.download =
@@ -1278,6 +1332,17 @@ selectModeBtn.addEventListener(
 
             showMessage(
                 "Please upload an image first."
+            );
+
+            return;
+
+        }
+
+
+        if (getBlurType() !== "selected") {
+
+            showMessage(
+                "Please select 'Selected Area' mode first."
             );
 
             return;
